@@ -26,36 +26,28 @@ import java.util.List;
 public class QuizController implements QuizControllerSpec {
 
     private final QuizService service;
-
-    @PreAuthorize("hasAuthority('SCOPE_TEST')")
-    @GetMapping("/ping")
-    public ResponseEntity<String> ping() {
-        SecurityContext context = SecurityContextHolder.getContext();
-        Authentication authentication = context.getAuthentication();
-
-        return ResponseEntity.status(HttpStatus.OK).body("Scopes: " + authentication.getAuthorities());
-    }
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     @Override
     public ResponseEntity<Void> start() {
-        service.start("123");
+        service.start(authentication.getName());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<QuestionDTO> getNextQuestion(String userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.newQuestion(userId));
+    public ResponseEntity<QuestionDTO> getNextQuestion() {
+        return ResponseEntity.status(HttpStatus.OK).body(service.newQuestion(authentication.getName()));
     }
 
     @Override
-    public ResponseEntity<Void> setAnswer(String userId, String referenceId, String movieId) {
-        service.answer(userId, referenceId, movieId);
+    public ResponseEntity<Void> setAnswer(String referenceId, String movieId) {
+        service.answer(authentication.getName(), referenceId, movieId);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @Override
-    public ResponseEntity<Void> finish(String userId) {
-        service.finish(userId);
+    public ResponseEntity<Void> finish() {
+        service.finish(authentication.getName());
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 

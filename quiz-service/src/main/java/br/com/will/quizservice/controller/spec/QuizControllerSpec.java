@@ -26,23 +26,26 @@ public interface QuizControllerSpec {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "500", description = "Unexpected Error")
     })
-    @GetMapping("/{userId}")
-    ResponseEntity<QuestionDTO> getNextQuestion(@PathVariable String userId);
+    @PreAuthorize("hasAuthority('QUIZ_PLAY_ROLE')")
+    @GetMapping("/next")
+    ResponseEntity<QuestionDTO> getNextQuestion();
 
 
     @Operation(summary = "Set Answer", description = "PUT")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "500", description = "Unexpected Error")
     })
-    @PutMapping("/{userId}/question/{referenceId}/answer/{movieId}")
-    ResponseEntity<Void> setAnswer(@PathVariable String userId, @PathVariable String referenceId, @PathVariable String movieId);
+    @PreAuthorize("hasAuthority('QUIZ_PLAY_ROLE')")
+    @PutMapping("/question/{referenceId}/answer/{movieId}")
+    ResponseEntity<Void> setAnswer(@PathVariable String referenceId, @PathVariable String movieId);
 
 
     @Operation(summary = "Finish Quiz", description = "POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "500", description = "Unexpected Error")
     })
-    @PostMapping("/finish/{userId}")
-    ResponseEntity<Void> finish(@PathVariable String userId);
+    @PreAuthorize("hasAuthority('QUIZ_PLAY_ROLE')")
+    @PostMapping("/finish")
+    ResponseEntity<Void> finish();
 
 }
