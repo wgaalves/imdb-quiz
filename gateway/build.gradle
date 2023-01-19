@@ -1,0 +1,55 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'br.com.will'
+archivesBaseName =  'gateway'
+sourceCompatibility = '11'
+
+bootJar {
+    layered()
+}
+
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', "Hoxton.SR8")
+}
+
+dependencies {
+
+
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-security'
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    implementation 'io.github.openfeign.form:feign-form:3.8.0'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

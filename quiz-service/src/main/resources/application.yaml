@@ -1,0 +1,64 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/auth/realms/master
+server:
+  port: 8090
+  servlet:
+    context-path: "/quiz"
+  application:
+    name: quiz-service
+  cloud:
+    consul:
+      enabled: false
+      service-registry:
+        enabled: false
+      config:
+        enabled: false
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
+springdoc:
+  packages-to-scan:
+    - br.com.will
+imdb:
+  url: "http://www.omdbapi.com"
+  movieList:
+  - "tt0111161"
+  - "tt0068646"
+  - "tt0108052"
+  - "tt0137523"
+  - "tt0120737"
+  - "tt0088763"
+  - "tt0099348"
+  - "tt0103639"
+  - "tt0435761"
+  - "tt0361748"
+  - "tt1213644"
+  - "tt0362165"
+  - "tt0466342"
+  - "tt0810913"
+  - "tt0327554"
+  - "tt0119707"
+  - "tt0103923"
+  - "tt0190374"
+  - "tt1530509"
+  - "tt0157262"
+  - "tt0115624"
+  - "tt0110857"
+  - "tt0795461"
+  - "tt12785720"
+  - "tt0903747"
+  - "tt4574334"
+  - "tt1190634"
+  - "tt0386676"
+  - "tt0460681"
+  - "tt0898266"
+  - "tt0182576"
+
+logging.level:
+  org.springframework.cloud.gateway: DEBUG
+  org.springframework.security: DEBUG
+  org.springframework.web.reactive.function.client: TRACE

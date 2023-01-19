@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      default-filters:
+        - TokenRelay
+      routes:
+        - id: quiz-service
+          uri: http://quiz-service:8090
+          predicates:
+            - Path=/quiz/**
+          filters:
+            - RemoveRequestHeader=Cookie
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            token-uri: http://keycloak:8080/auth/realms/master/protocol/openid-connect/token
+            authorization-uri: http://keycloak:8080/auth/realms/master/protocol/openid-connect/auth
+            userinfo-uri: http://keycloak:8080/auth/realms/master/protocol/openid-connect/userinfo
+            user-name-attribute: preferred_username
+        registration:
+          Quiz:
+            provider: keycloak
+            client-id: quiz-gateway
+            client-secret: c6480137-1526-4c3e-aed3-295aabcb7609
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
+
+
+server.port: 8060
+
+oauth2:
+  client: quiz-gateway
+  secret: c6480137-1526-4c3e-aed3-295aabcb7609
+
+logging.level:
+  org.springframework.cloud.gateway: DEBUG
+  org.springframework.security: DEBUG
+  org.springframework.web.reactive.function.client: TRACE
+
+#docker exec -it keycloak /opt/jboss/keycloak/bin/kcadm.sh config credentials --server http://localhost:8080/auth --realm master --user spring --password spring123 && \
+#docker exec -it keycloak /opt/jboss/keycloak/bin/kcadm.sh create -x "client-scopes" -r master -s name=QUIZ_PLAY_ROLE -s protocol=openid-connect && \
+#docker exec -it keycloak /opt/jboss/keycloak/bin/kcadm.sh create clients -r master -s clientId=gateway -s enabled=true -s clientAuthenticatorType=client-secret -s secret=c6480137-1526-4c3e-aed3-295aabcb7609  -s 'redirectUris=["*"]' -s 'defaultClientScopes=["QUIZ_PLAY_ROLE", "web-origins", "profile", "roles", "email"]'
