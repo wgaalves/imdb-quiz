@@ -9,9 +9,10 @@
 
 ## Stack
 - Docker
-- Docker-compose
+- docker-compose
 - Java 11/77
 - Spring Boot
+- Spring cloud
 - Keycloak
 - Gradle
 
@@ -24,7 +25,9 @@
 
 ## Script After Run
 
--
+- Run `keycloak.sh`
+- login on keycloak admin  localhost:8888/auth/admin  
+- go on clients and choose quiz-gateway and enable `Direct Access Grants`
 
 ## Documentation
 - Swagger on `http://localhost:8060/quiz/swagger-ui/index.html`

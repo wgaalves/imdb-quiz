@@ -15,4 +15,9 @@ public interface QuizRepository extends MongoRepository<Quiz, String> {
     boolean existsByFinishedAndAndUserId(boolean finished, String userId);
     Quiz findByUserIdAndFinished(String userId, boolean active);
 
+    List<Quiz> findAllByUserIdAndFinished(String userId, boolean active);
+
+    List<Quiz> findByUserId(String user);
+
+    List<Quiz> findDistinctByUserId();
 }

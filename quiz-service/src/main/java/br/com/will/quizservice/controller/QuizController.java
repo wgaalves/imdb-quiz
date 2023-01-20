@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -26,28 +27,28 @@ import java.util.List;
 public class QuizController implements QuizControllerSpec {
 
     private final QuizService service;
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
 
     @Override
-    public ResponseEntity<Void> start() {
-        service.start(authentication.getName());
+    public ResponseEntity<Void> start(Principal principal) {
+        service.start(principal.getName());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<QuestionDTO> getNextQuestion() {
-        return ResponseEntity.status(HttpStatus.OK).body(service.newQuestion(authentication.getName()));
+    public ResponseEntity<QuestionDTO> getNextQuestion(Principal principal) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.newQuestion(principal.getName()));
     }
 
     @Override
-    public ResponseEntity<Void> setAnswer(String referenceId, String movieId) {
-        service.answer(authentication.getName(), referenceId, movieId);
+    public ResponseEntity<Void> setAnswer(Principal principal, String referenceId, String movieId) {
+        service.answer(principal.getName(), referenceId, movieId);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @Override
-    public ResponseEntity<Void> finish() {
-        service.finish(authentication.getName());
+    public ResponseEntity<Void> finish(Principal principal) {
+        service.finish(principal.getName());
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 

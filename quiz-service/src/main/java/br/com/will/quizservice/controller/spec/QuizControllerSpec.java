@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 
 @Tag(description = "Quiz Controller", name = "Quiz")
 public interface QuizControllerSpec {
@@ -18,34 +20,38 @@ public interface QuizControllerSpec {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "500", description = "Unexpected Error")
     })
-    @PreAuthorize("hasAuthority('QUIZ_PLAY_ROLE')")
+    @PreAuthorize("hasAuthority('SCOPE_QUIZ_PLAY')")
     @PostMapping("/start")
-    ResponseEntity<Void> start();
+    ResponseEntity<Void> start(Principal principal);
 
     @Operation(summary = "get Question", description = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "500", description = "Unexpected Error")
     })
-    @PreAuthorize("hasAuthority('QUIZ_PLAY_ROLE')")
+    @PreAuthorize("hasAuthority('SCOPE_QUIZ_PLAY')")
     @GetMapping("/next")
-    ResponseEntity<QuestionDTO> getNextQuestion();
+    ResponseEntity<QuestionDTO> getNextQuestion(Principal principal);
 
 
     @Operation(summary = "Set Answer", description = "PUT")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "500", description = "Unexpected Error")
     })
-    @PreAuthorize("hasAuthority('QUIZ_PLAY_ROLE')")
+    @PreAuthorize("hasAuthority('SCOPE_QUIZ_PLAY')")
     @PutMapping("/question/{referenceId}/answer/{movieId}")
-    ResponseEntity<Void> setAnswer(@PathVariable String referenceId, @PathVariable String movieId);
+    ResponseEntity<Void> setAnswer(Principal principal, @PathVariable String referenceId, @PathVariable String movieId);
 
 
     @Operation(summary = "Finish Quiz", description = "POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "500", description = "Unexpected Error")
     })
-    @PreAuthorize("hasAuthority('QUIZ_PLAY_ROLE')")
+    @PreAuthorize("hasAuthority('SCOPE_QUIZ_PLAY')")
     @PostMapping("/finish")
-    ResponseEntity<Void> finish();
+    ResponseEntity<Void> finish(Principal principal);
+
+
+
+
 
 }

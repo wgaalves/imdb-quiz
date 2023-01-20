@@ -78,6 +78,11 @@ public class QuizService {
                 save(quiz);
               }
             });
+
+    if((int) quiz.getQuestions().stream().filter(question -> question.getIscorrect() == Boolean.FALSE).count() > 3){
+      quiz.setFinished(Boolean.TRUE);
+      save(quiz);
+    }
   }
 
   public void finish(String userId){
